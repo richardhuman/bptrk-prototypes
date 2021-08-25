@@ -9,3 +9,4 @@ class BpksApplication
 fun main(args: Array<String>) {
 	runApplication<BpksApplication>(*args)
 }
+
