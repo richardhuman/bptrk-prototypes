@@ -1,3 +1,7 @@
+# OD
+.DS_Store
+
+# IDE
 .idea
 
 # Java

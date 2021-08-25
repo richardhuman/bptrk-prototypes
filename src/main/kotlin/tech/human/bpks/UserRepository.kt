@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface UserRepository : CrudRepository<User, Long> {
+
     fun findByUsername(username: String): User?
 
     @Query(value = "select * from users", nativeQuery = true)
