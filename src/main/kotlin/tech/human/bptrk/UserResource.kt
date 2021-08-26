@@ -16,7 +16,9 @@ class UserResource(val service: UserService) : Logging {
 
     @GetMapping("/users/{ref}")
     fun findByRef(@PathVariable ref: UUID): User?  {
-        logger().info("[UserResource::findByRef] $ref.")
-        return service.findByRef(ref)
+        val user = service.findByRef(ref)
+        val readings = user?.bloodPressureReadings?.joinToString()
+        logger().info("[UserResource] $ref => ${user?.username} => $readings")
+        return user
     }
 }
