@@ -1,5 +1,6 @@
-package tech.human.bpks
+package tech.human.bptrk
 
+import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -12,8 +13,9 @@ class User(
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="idusers_id_seq")
     val id: Int,
 
-    @Column(nullable = false)
-    val username: String
-) {
+    @Column(unique = true, columnDefinition = "uuid", updatable = false)
+    val ref: UUID,
 
-}
+    @Column(nullable = false, unique = true)
+    val username: String
+) { }

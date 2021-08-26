@@ -1,12 +1,12 @@
-package tech.human.bpks
+package tech.human.bptrk
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class BpksApplication
+class BptrkKtSpringApplication
 
 fun main(args: Array<String>) {
-	runApplication<BpksApplication>(*args)
+	runApplication<BptrkKtSpringApplication>(*args)
 }
 
