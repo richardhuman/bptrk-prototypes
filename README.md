@@ -5,6 +5,6 @@ This project is a set of prototypes of various stacks, including different deplo
 
 ## Stacks implemented so far
 
-* HTTP API (REST-like) in Kotlin, Spring Boot, JPA, Postgres
+* HTTP API (REST-like) in Kotlin, Spring Boot, JPA, Postgres - https://github.com/richardhuman/bptrk-prototypes/tree/main/bptrk-kt-spring
 
 
