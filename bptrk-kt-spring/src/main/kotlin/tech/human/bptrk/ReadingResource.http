@@ -1,0 +1,15 @@
+### Post Create Reading
+### curl -X POST --location "http://localhost:8080/readings/49a26b9d-7b64-40b0-ae73-a63e2eb04b14" -H "Content-Type: application/json" -d "{ \"notes\": \"Brunch\", \"systolic\": 120, "\diastolic\": 80, \"pulseRate\": 60 }"
+POST http://localhost:8080/readings/49a26b9d-7b64-40b0-ae73-a63e2eb04b14
+Content-Type: application/json
+
+{
+  "text": "Hello!",
+  "notes": "Brunch",
+  "systolic": 120,
+  "diastolic": 80,
+  "pulseRate": 60
+}
+
+
+

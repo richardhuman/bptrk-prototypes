@@ -2,7 +2,9 @@ package tech.human.bptrk
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.NaturalId
 import org.hibernate.annotations.UpdateTimestamp
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
@@ -18,24 +20,30 @@ class User(
         allocationSize = 1
     )
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_users_id_seq")
-    val id: Int,
+    val id: Int = 0,
 
-    @Column(unique = true, columnDefinition = "uuid", updatable = false)
-    val ref: UUID,
+    @Column(columnDefinition = "uuid", unique = true, updatable = false, insertable = false)
+    val ref: UUID = UUID.randomUUID(),
 
-    @Column(nullable = false, name = "created_at", updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
-    val createdAt: LocalDateTime,
+    val createdAt: LocalDateTime = LocalDateTime.now(),
 
-    @Column(nullable = false, name = "updated_at", updatable = false)
-    @UpdateTimestamp
-    val updatedAt: LocalDateTime,
-
+    @NaturalId
     @Column(nullable = false, unique = true)
     val username: String,
 
+) {
+
+    @Column(name = "full_name")
+    var fullName: String? = ""
+
+    @Column(name = "updated_at", insertable = false)
+    @UpdateTimestamp
+    var updatedAt: LocalDateTime? = null
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JsonIgnore
-    val bloodPressureReadings: Set<BloodPressureReading>
+    val bloodPressureReadings: Set<BloodPressureReading> = emptySet()
 
-) {}
+}

@@ -14,7 +14,7 @@ DROP USER IF EXISTS bptrk_dev;
 DROP USER IF EXISTS bptrk_test;
 
 CREATE USER bptrk_dev WITH PASSWORD 'bptrk_dev' CREATEDB;
-CREATE USER bptrk_test WITH PASSWORD 'bptrk_dev' CREATEDB;
+CREATE USER bptrk_test WITH PASSWORD 'bptrk_test' CREATEDB;
 
 CREATE DATABASE bptrk_kt_spring ENCODING='UTF8';
 CREATE DATABASE bptrk_kt_spring_test ENCODING='UTF8';

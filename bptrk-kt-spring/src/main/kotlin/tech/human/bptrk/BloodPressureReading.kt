@@ -18,23 +18,19 @@ class BloodPressureReading(
         allocationSize = 1
     )
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_blood_pressure_readings_id_seq")
-    val id: Int,
+    var id: Int = 0,
 
     @Column(unique = true, columnDefinition = "uuid", updatable = false)
-    val ref: UUID,
+    var ref: UUID,
 
     @Column(nullable = false, name = "created_at", updatable = false)
     @CreationTimestamp
-    val createdAt: LocalDateTime,
-
-    @Column(nullable = false, name = "updated_at", updatable = false)
-    @UpdateTimestamp
-    val updatedAt: LocalDateTime,
+    var createdAt: LocalDateTime = LocalDateTime.now(),
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
-    val user: User,
+    var user: User,
 
     @Column(name = "systolic", nullable = false)
     val systolic: Int,
@@ -45,10 +41,15 @@ class BloodPressureReading(
     @Column(name = "pulse_rate", nullable = false)
     val pulseRate: Int,
 
-    @Column(name = "notes")
-    val notes: String,
+    ) {
 
-) {
+    @Column(nullable = false, name = "updated_at", updatable = false)
+    @UpdateTimestamp
+    var updatedAt: LocalDateTime? = null
+
+    @Column
+    var notes: String? = null
+
     override fun toString() : String {
         return "[BP: $systolic/$diastolic - $pulseRate]"
     }
