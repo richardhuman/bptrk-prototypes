@@ -1,1 +1,1 @@
-rootProject.name = "bpks"
+rootProject.name = "bptrk-kt-spring"

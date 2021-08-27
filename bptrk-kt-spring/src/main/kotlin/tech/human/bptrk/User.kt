@@ -1,5 +1,6 @@
 package tech.human.bptrk
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
@@ -34,6 +35,7 @@ class User(
     val username: String,
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JsonIgnore
     val bloodPressureReadings: Set<BloodPressureReading>
 
 ) {}
