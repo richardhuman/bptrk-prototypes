@@ -1,13 +1,13 @@
 package tech.human.bptrk
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.NaturalId
-import org.hibernate.annotations.UpdateTimestamp
-import java.time.LocalDate
+import org.hibernate.annotations.*
 import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Entity
+import javax.persistence.Table
 
 @Entity
 @Table(name = "users")
@@ -20,30 +20,44 @@ class User(
         allocationSize = 1
     )
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_users_id_seq")
-    val id: Int = 0,
+    val id: Long = 0,
 
-    @Column(columnDefinition = "uuid", unique = true, updatable = false, insertable = false)
-    val ref: UUID = UUID.randomUUID(),
+    @Column(columnDefinition = "uuid", unique = true, nullable = false, updatable = false)
+    var ref: UUID = UUID.randomUUID(),
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    @CreationTimestamp
     val createdAt: LocalDateTime = LocalDateTime.now(),
 
     @NaturalId
     @Column(nullable = false, unique = true)
     val username: String,
 
-) {
+    ) {
 
     @Column(name = "full_name")
     var fullName: String? = ""
 
     @Column(name = "updated_at", insertable = false)
-    @UpdateTimestamp
     var updatedAt: LocalDateTime? = null
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+//    @JsonIgnore
     val bloodPressureReadings: Set<BloodPressureReading> = emptySet()
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as User
+
+        if (username != other.username) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return username.hashCode()
+    }
+
 
 }

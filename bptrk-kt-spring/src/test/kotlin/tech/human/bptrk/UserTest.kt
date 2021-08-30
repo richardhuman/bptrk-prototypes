@@ -5,10 +5,12 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.boot.test.context.SpringBootTest
+import tech.human.bptrk.util.Logging
+import tech.human.bptrk.util.logger
 import javax.transaction.Transactional
 
 @SpringBootTest
-class UserTests {
+class UserTests : Logging {
 
     @Autowired
     private val entityManager: TestEntityManager? = null
@@ -20,7 +22,7 @@ class UserTests {
     @Transactional
     fun givenUser_whenSaved_thenFound() {
 
-        val testUsername = "test-user-2"
+        val testUsername = createUniqueTestUsername("test-user-2")
         val userToSave = User(username = testUsername)
         val defaultUUID = userToSave.ref
 
@@ -28,36 +30,18 @@ class UserTests {
         entityManager?.refresh(userToSave) // This gets us the DB UUID back
 
         Assertions.assertNotNull(userToSave.ref)
-        println(defaultUUID)
-        println(userToSave.ref)
-        Assertions.assertNotEquals(userToSave.ref, defaultUUID)
+        logger().info("defaultUUID = $defaultUUID")
+        logger().info("userToSave.ref => ${userToSave.ref}")
 
-        val userToFind = repository?.findByRef(userToSave.ref)
+        Assertions.assertEquals(userToSave.ref, defaultUUID) // We've set a default so it should get passed in
 
-        Assertions.assertEquals(userToSave.ref, userToFind?.ref)
+        val userToFind = repository?.findByUsername(testUsername)
+
+        Assertions.assertNotNull(userToFind)
         Assertions.assertEquals(testUsername, userToFind?.username)
+        Assertions.assertEquals(userToSave.ref, userToFind?.ref)
 
     }
 
-    @Test
-//    @Transactional
-    fun givenUser_whenSaved_thenUpdateStamped() {
-
-        val testUsername = createUniqueTestUsername("test-user-3")
-        val userToSave = User(username = testUsername)
-        val userSaved = repository?.save(userToSave)
-        entityManager?.refresh(userToSave)
-
-        Assertions.assertNotNull(userToSave.updatedAt)
-        val updateTimestamp1 = userToSave.updatedAt
-
-        userToSave.fullName = "Richard Test"
-        repository?.save(userToSave)
-        entityManager?.refresh(userToSave)
-        val updateTimestamp2 = userToSave.updatedAt
-
-        Assertions.assertNotEquals(updateTimestamp1, updateTimestamp2)
-
-    }
 }
 
