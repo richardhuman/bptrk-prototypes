@@ -30,12 +30,12 @@ val googleClientSecret = "myGoogleClientSecret"
 val oAuthPersistence = InsecureCookieBasedOAuthPersistence("Google")
 
 // pre-defined configuration exist for common OAuth providers
-val oauthProvider = OAuthProvider.google(
-        JavaHttpClient(),
-        Credentials(googleClientId, googleClientSecret),
-        Uri.of("http://localhost:9000/oauth/callback"),
-        oAuthPersistence
-)
+//val oauthProvider = OAuthProvider.google(
+//        JavaHttpClient(),
+//        Credentials(googleClientId, googleClientSecret),
+//        Uri.of("http://localhost:9000/oauth/callback"),
+//        oAuthPersistence
+//)
 val app: HttpHandler = routes(
     "/ping" bind GET to {
         Response(OK).body("pong")
@@ -45,10 +45,10 @@ val app: HttpHandler = routes(
         Response(OK).with(jacksonMessageLens of JacksonMessage("Barry", "Hello there!"))
     },
 
-    "/oauth" bind routes(
-            "/" bind GET to oauthProvider.authFilter.then { Response(OK).body("hello!") },
-            "/callback" bind GET to oauthProvider.callback
-    )
+//    "/oauth" bind routes(
+//            "/" bind GET to oauthProvider.authFilter.then { Response(OK).body("hello!") },
+//            "/callback" bind GET to oauthProvider.callback
+//    )
 )
 
 fun main() {
