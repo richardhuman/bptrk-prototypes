@@ -17,17 +17,18 @@
         <junit.version>5.7.2</junit.version>
         <postgres.version>42.2.9</postgres.version>
 
-        <sources.generated>target/generated</sources.generated>
+        <maven.build-helper.version>3.2.0</maven.build-helper.version>
+        <maven.surefire.version>2.22.0</maven.surefire.version>
 
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <exec-java.main-class>tech.human.bptrk.AppKt</exec-java.main-class>
         <exec-java.version>3.0.0</exec-java.version>
 
-        <maven.build-helper.version>3.2.0</maven.build-helper.version>
+
+        <sources.generated>target/generated</sources.generated>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
 
@@ -248,60 +249,6 @@
                 </executions>
             </plugin>
 
-            <!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>default-compile</id>
-                        <phase>none</phase>
-                    </execution>
-                    <execution>
-                        <id>default-testCompile</id>
-                        <phase>none</phase>
-                    </execution>
-                    <execution>
-                        <id>java-compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>java-test-compile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-
-            </plugin>
-            -->
-
-            <!-- Bundle to jar -->
-            <!--
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-jar-plugin</artifactId>
-                            <version>2.6</version>
-                            <configuration>
-                                <archive>
-                                    <manifest>
-                                        <addClasspath>true</addClasspath>
-                                        <mainClass>${main.class}</mainClass>
-                                    </manifest>
-                                </archive>
-                            </configuration>
-                        </plugin>
-            -->
-
             <!-- =============================================================== -->
             <!--    Exec                                                         -->
             <!-- =============================================================== -->
@@ -321,11 +268,13 @@
             <!-- =============================================================== -->
             <!--    TEST                                                         -->
             <!-- =============================================================== -->
+
             <!-- JUnit 5 requires Surefire version 2.22.0 or higher -->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.0</version>
+                <version>${maven.surefire.version}</version>
             </plugin>
+
         </plugins>
 
     </build>
