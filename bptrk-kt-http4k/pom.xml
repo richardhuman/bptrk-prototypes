@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>tech.human.bptrk</groupId>
+    <artifactId>bptrk-kt-http4k</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>Human Tech - BP TRK</name>
+    <packaging>jar</packaging>
+
+    <properties>
+        <java.version>9</java.version>
+        <kotlin.version>1.5.30</kotlin.version>
+        <http4k.version>4.12.0.0</http4k.version>
+        <jooq.version>3.15.2</jooq.version>
+        <junit.version>5.7.2</junit.version>
+        <postgres.version>42.2.9</postgres.version>
+
+        <sources.generated>target/generated</sources.generated>
+
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <exec-java.main-class>tech.human.bptrk.AppKt</exec-java.main-class>
+        <exec-java.version>3.0.0</exec-java.version>
+
+        <maven.build-helper.version>3.2.0</maven.build-helper.version>
+    </properties>
+
+
+    <!-- ======================================================================================================= -->
+    <!-- ======================================================================================================= -->
+
+
+    <dependencies>
+        <!-- =============================================================== -->
+        <!--    Kotlin                                                       -->
+        <!-- =============================================================== -->
+
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+
+        <!-- =============================================================== -->
+        <!--    http4k                                                       -->
+        <!-- =============================================================== -->
+
+        <dependency>
+            <groupId>org.http4k</groupId>
+            <artifactId>http4k-core</artifactId>
+            <version>${http4k.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.http4k</groupId>
+            <artifactId>http4k-format-jackson</artifactId>
+            <version>${http4k.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.http4k</groupId>
+            <artifactId>http4k-security-oauth</artifactId>
+            <version>${http4k.version}</version>
+        </dependency>
+
+        <!-- =============================================================== -->
+        <!--    jooq                                                         -->
+        <!-- =============================================================== -->
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>${jooq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-meta</artifactId>
+            <version>${jooq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-codegen</artifactId>
+            <version>${jooq.version}</version>
+        </dependency>
+        <dependency>
+            <!-- Required for the JPA annotations -->
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-meta-extensions-hibernate</artifactId>
+            <version>${jooq.version}</version>
+        </dependency>
+
+
+        <!-- =============================================================== -->
+        <!--    Runtime/DB                                                   -->
+        <!-- =============================================================== -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgres.version}</version>
+        </dependency>
+
+        <!-- =============================================================== -->
+        <!--    Testing/junit                                               -->
+        <!-- =============================================================== -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+    </dependencies>
+
+    <!-- ======================================================================================================= -->
+    <!-- ======================================================================================================= -->
+
+    <build>
+
+        <plugins>
+
+            <!-- =============================================================== -->
+            <!--    JOOQ                                                         -->
+            <!-- =============================================================== -->
+
+            <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <version>${jooq.version}</version>
+
+                <!-- The plugin should hook into the generate goal -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+
+                    <!-- JDBC connection parameters -->
+                    <jdbc>
+                        <driver>org.postgresql.Driver</driver>
+                        <url>jdbc:postgresql://localhost/bptrk_kt_spring</url>
+                        <user>bptrk_dev</user>
+                        <password>bptrk_dev</password>
+                    </jdbc>
+
+                    <!-- Generator parameters -->
+                    <generator>
+                        <database>
+                            <name>org.jooq.meta.postgres.PostgresDatabase</name>
+                            <includes>.*</includes>
+                            <excludes></excludes>
+                            <inputSchema>public</inputSchema>
+                        </database>
+
+                        <strategy/>
+
+                        <generate>
+                            <generatedAnnotation>true</generatedAnnotation>
+                            <generatedAnnotationType>DETECT_FROM_JDK</generatedAnnotationType>
+                            <jpaAnnotations>true</jpaAnnotations>
+                            <jpaVersion>2.2</jpaVersion>
+                        </generate>
+
+                        <target>
+                            <packageName>tech.human.bptrk.jooq.generated</packageName>
+                            <directory>${sources.generated}</directory>
+                        </target>
+                    </generator>
+                </configuration>
+
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${maven.build-helper.version}</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${sources.generated}</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- =============================================================== -->
+            <!--    Kotlin                                                       -->
+            <!-- =============================================================== -->
+
+            <plugin>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <version>${kotlin.version}</version>
+
+                <configuration>
+                    <jvmTarget>${java.version}</jvmTarget>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirs>
+                                <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                                <!-- <sourceDir>${project.basedir}/target/generated</sourceDir> -->
+                            </sourceDirs>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>test-compile</id>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirs>
+                                <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
+                            </sourceDirs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>default-testCompile</id>
+                        <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>java-compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>java-test-compile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+            </plugin>
+            -->
+
+            <!-- Bundle to jar -->
+            <!--
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-jar-plugin</artifactId>
+                            <version>2.6</version>
+                            <configuration>
+                                <archive>
+                                    <manifest>
+                                        <addClasspath>true</addClasspath>
+                                        <mainClass>${main.class}</mainClass>
+                                    </manifest>
+                                </archive>
+                            </configuration>
+                        </plugin>
+            -->
+
+            <!-- =============================================================== -->
+            <!--    Exec                                                         -->
+            <!-- =============================================================== -->
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${exec-java.version}</version>
+                <configuration>
+                    <mainClass>${exec-java.main-class}</mainClass>
+                    <arguments>
+                        <argument>-classpath</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+
+            <!-- =============================================================== -->
+            <!--    TEST                                                         -->
+            <!-- =============================================================== -->
+            <!-- JUnit 5 requires Surefire version 2.22.0 or higher -->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.0</version>
+            </plugin>
+        </plugins>
+
+    </build>
+</project>

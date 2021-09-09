@@ -9,6 +9,6 @@ class AppTest {
 	fun appTestBasic() {
 		println("Running TEST")
 		val app = App();
-		assertEquals("FAIL", app.greeting)
+		assertEquals("Hello World!", app.greeting)
 	}
 }
