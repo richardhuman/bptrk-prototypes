@@ -24,7 +24,7 @@ class App {
                 val create: DSLContext = DSL.using(conn, SQLDialect.POSTGRES)
                 val results: Result<UserRecord> = create.selectFrom(Tables.USER).fetch()
                 for (r: UserRecord in results) {
-                    val name = r.username;
+                    val name = r.username
                     val ref = r.ref
                     val id = r.id
 
